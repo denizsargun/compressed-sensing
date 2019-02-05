@@ -23,8 +23,8 @@ def idct2(x):
 
 # read original image and downsize for speed
 # Xorig = spimg.imread('escher_waterfall.jpg', flatten=True, mode='L') # read in grayscale
-path = '/home/denizsargun/Documents/github/new_ideas/compressed_sensing/code/data_csv'
-X = spimg.imread(path+'/mnist_sample.jpg', flatten=True, mode='L')
+path = '/home/denizsargun/Documents/github/new_ideas/compressed_sensing/code/'
+X = spimg.imread(path+'mnist_sample.jpg', flatten=True, mode='L')
 # plt.imshow(Xorig)
 plt.imshow(X)
 plt.show()
