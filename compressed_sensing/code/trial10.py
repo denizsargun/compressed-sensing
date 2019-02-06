@@ -7,7 +7,7 @@ from scipy.stats import truncnorm
 
 nx = 28
 ny = 28
-k = 80
+k = 720
 
 with open("/home/denizsargun/Downloads/mnist_data/csv/pickled_mnist.pkl", "br") as fh:
     data = pickle.load(fh)
@@ -187,20 +187,19 @@ class NeuralNetwork:
         return corrects, wrongs
 
 
-epochs = 1
-print('here')
+epochs = 10
 ANN = NeuralNetwork(network_structure=[image_pixels, 80, 80, 10],
                                learning_rate=0.01,
                                bias=0.5)
-
+#
 ANN.train(train_imgs, train_labels_one_hot, epochs=epochs)
-print('and')
-ANN.evaluate(test_imgs, test_labels)
-# we have reduced the network's input dimension
-ANNCS = NeuralNetwork(network_structure=[k, 80, 80, 10],
-                               learning_rate=0.01,
-                               bias=0.5)
+# print('and')
+# ANN.evaluate(test_imgs, test_labels)
 
-ANNCS.train(train_imgs_rand, train_labels_one_hot, epochs=epochs)
-print('there')
-ANNCS.evaluate(test_imgs_rand, test_labels)
+# we have reduced the network's input dimension
+# ANNCS = NeuralNetwork(network_structure=[k, 80, 80, 10],
+#                                learning_rate=0.01,
+#                                bias=0.5)
+
+# ANNCS.train(train_imgs_rand, train_labels_one_hot, epochs=epochs)
+# ANNCS.evaluate(test_imgs_rand, test_labels)
