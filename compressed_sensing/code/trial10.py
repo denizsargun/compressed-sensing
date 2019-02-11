@@ -7,7 +7,7 @@ from scipy.stats import truncnorm
 
 nx = 28
 ny = 28
-k = 720
+k = 784
 
 with open("/home/denizsargun/Downloads/mnist_data/csv/pickled_mnist.pkl", "br") as fh:
     data = pickle.load(fh)
@@ -26,12 +26,17 @@ image_pixels = image_size * image_size
 train_imgs_rand = np.zeros((train_imgs.shape[0],k))
 test_imgs_rand = np.zeros((test_imgs.shape[0],k))
 
+# for arbitrary but fixed indeces
+# ri = np.random.choice(nx*ny, k, replace=False)
+
 for i in np.arange(train_imgs.shape[0]):
     ri = np.random.choice(nx*ny, k, replace=False)
+    # for sorted indeces sort.ri()
     train_imgs_rand[i] = train_imgs[i].flat[ri]
 
 for i in np.arange(test_imgs.shape[0]):
     ri = np.random.choice(nx*ny, k, replace=False)
+    # for sorted indeces sort.ri()
     test_imgs_rand[i] = test_imgs[i].flat[ri]
 
 
@@ -188,18 +193,18 @@ class NeuralNetwork:
 
 
 epochs = 10
-ANN = NeuralNetwork(network_structure=[image_pixels, 80, 80, 10],
-                               learning_rate=0.01,
-                               bias=0.5)
+# ANN = NeuralNetwork(network_structure=[image_pixels, 80, 80, 10],
+#                               learning_rate=0.01,
+#                               bias=0.5)
 #
-ANN.train(train_imgs, train_labels_one_hot, epochs=epochs)
+# ANN.train(train_imgs, train_labels_one_hot, epochs=epochs)
 # print('and')
 # ANN.evaluate(test_imgs, test_labels)
 
 # we have reduced the network's input dimension
-# ANNCS = NeuralNetwork(network_structure=[k, 80, 80, 10],
-#                                learning_rate=0.01,
-#                                bias=0.5)
+ANNCS = NeuralNetwork(network_structure=[k, 80, 80, 10],
+                                learning_rate=0.01,
+                                bias=0.5)
 
-# ANNCS.train(train_imgs_rand, train_labels_one_hot, epochs=epochs)
-# ANNCS.evaluate(test_imgs_rand, test_labels)
+ANNCS.train(train_imgs_rand, train_labels_one_hot, epochs=epochs)
+ANNCS.evaluate(test_imgs_rand, test_labels)
