@@ -7,7 +7,7 @@ from scipy.stats import truncnorm
 
 nx = 28
 ny = 28
-k = 784
+k = 10
 
 with open("/home/denizsargun/Downloads/mnist_data/csv/pickled_mnist.pkl", "br") as fh:
     data = pickle.load(fh)
@@ -30,7 +30,7 @@ test_imgs_rand = np.zeros((test_imgs.shape[0],k))
 # use standard Gaussian random vectors of size image-pixels and normalize their L2 norm
 N = np.zeros((image_pixels,k))
 for i in np.arange(k):
-	v = np.random.normal(size=(image_pixels,1))
+	v = np.random.normal(size=image_pixels)
 	N[:,i] = v/np.linalg.norm(v)
 
 # sample
@@ -189,6 +189,7 @@ class NeuralNetwork:
                 corrects += 1
             else:
                 wrongs += 1
+        print(corrects,wrongs)
         return corrects, wrongs
 
 epochs = 10
@@ -199,3 +200,4 @@ ANNCS = NeuralNetwork(network_structure=[k, 80, 80, 10],
 
 ANNCS.train(train_imgs_rand, train_labels_one_hot, epochs=epochs)
 ANNCS.evaluate(test_imgs_rand, test_labels)
+print(ANNCS.weights_matrices[0].shape[1])
