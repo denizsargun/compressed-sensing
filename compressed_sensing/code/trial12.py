@@ -10,3 +10,5 @@ testFile = "test_32x32.mat"
 
 trainData = scipy.io.loadmat(folder+trainFile)
 testData = scipy.io.loadmat(folder+testFile)
+
+trainData['X'][:,:,:,0]
