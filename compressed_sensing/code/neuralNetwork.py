@@ -154,6 +154,5 @@ class NeuralNetwork:
                 corrects += 1
             else:
                 wrongs += 1
-        print(corrects,wrongs)
-		print('classification error is ',wrongs/(corrects+wrongs))
+        print(corrects,wrongs,' classification error is ',wrongs/(corrects+wrongs))
         return corrects, wrongs

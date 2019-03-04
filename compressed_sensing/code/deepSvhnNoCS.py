@@ -1,6 +1,5 @@
 # read+learn street view house numbers dataset
 # use fully connected feedforward neural net
-# sample compressively using compressed sensing matrices
 
 import sys
 import os
@@ -29,10 +28,10 @@ trainData['y'] = np.ravel(np.remainder(trainData['y'],10))
 testData['y'] = np.ravel(np.remainder(testData['y'],10))
 
 # data specifications
-# trainSize = trainData['y'].shape[0]
-trainSize = 100
-# testSize = testData['y'].shape[0]
-testSize = 100
+trainSize = trainData['y'].shape[0]
+# trainSize = 10000
+testSize = testData['y'].shape[0]
+# testSize = 10000
 imageSize = 32*32*3
 
 # create 1D version of 3D images
@@ -56,38 +55,12 @@ testLabels = testData['y']
 trainData = squeezeTrain
 testData = squeezeTest
 
-# random sample training and test data
-k = 3072 # compressed sensing parameter
-print('k = ',k)
-trainRand = np.zeros((trainSize,k))
-testRand = np.zeros((testSize,k))
-
-# generate sampling vectors uniformly over the sphere with dimension image-pixels
-# use standard Gaussian random vectors of size image-pixels and normalize their L2 norm
-N = np.zeros((imageSize,k))
-for i in np.arange(k):
-	v = np.random.normal(size=imageSize)
-	N[:,i] = v/np.linalg.norm(v)
-
-# sample
-for i in np.arange(trainSize):
-	for j in np.arange(k):
-		trainRand[i,j] = np.inner(trainData[:,i],N[:,j])
-		if not i%1000 and j == 0:
-			print('measuring ',i,'th train data')
-
-for i in np.arange(testSize):
-	for j in np.arange(k):
-		testRand[i,j] = np.inner(testData[:,i],N[:,j])
-		if not i%1000 and j == 0:
-			print('measuring ',i,'th test data')
-
 # create, train and evaluate feedforward fully connected NN with backpropagation and SGD
-NN = NeuralNetwork(network_structure=[k, 80, 80, 10],
+NN = NeuralNetwork(network_structure=[3072, 80, 80, 10],
                                 learning_rate=0.01,
                                 bias=0.5)
-NN.train(trainRand,trainLabels,epochs=10)
-NN.evaluate(testRand,testLabels) # evaluate using indexed labels instead of one-hot labels
+NN.train(trainData.transpose(),trainLabels,epochs=10)
+NN.evaluate(testData.transpose(),testLabels) # evaluate using indexed labels instead of one-hot labels
 
 # running on OSC
 # sys.exit(0)
